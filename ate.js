@@ -18,23 +18,40 @@ var Ate = (function () {
 
 		},
 
-		fnBegin = 'function(meta,root,parent,helpers,partials){meta=meta||{};meta.context=this;meta.parent=parent;var out="',
+		fnBegin = 'function(meta,root,parent,helpers,partials){meta=meta||{};' +
+			'meta.context=this;meta.parent=parent;var out="',
+		
 		regexp = [
-			[/\n/g, '\\n'],// handle new lines
-			[/({{!--.+?--}}|{{!.+?}})/g, ''], // remove comments {{!-- xy --}} or {{! xy}}
-			[/(")(?![^{{]*}})/g, '\\"'], // handle double quotes
-			[/{{#if (.+?)}}/g, '";if($1){out+="'], // if
-			[/{{#elseif (.+?)}}/g, '"}else if($1){out+="'], // else if
-			[/{{#else}}/g, '"}else{out+="'], // else
-			[/{{\/if}}/g, '"}out+="'], // end if
-			[/{{#(.+?) (.+?)\/}}/g, '"+helpers.$1.call(this,($2))+"'], // singe helper
-			[/{{#(.+?)\/}}/g, '"+helpers.$1.call(this)+"'], // singe helper without arguments
-			[/{{#(.+?) (.+?)}}/g, '"+helpers.$1.call(this,($2),function(c,m){return(' + fnBegin], // open block helper
-			[/{{#(.+?)}}/g, '"+helpers.$1(function(c,m){return(' + fnBegin], // pen block helper without arguments
-			[/{{\/(.+?)}}/g, '";return out}).call(c,m,root,meta,helpers,partials)})+"'], // end block helper
-			[/{{>(.+?) (.+?)}}/g, '"+partials.$1($2)+"'], // partial
-			[/{{>(.+?)}}/g, '"+partials.$1()+"'], // partial without arguments
-			[/{{(.+?)}}/g, '"+($1)+"'] // default
+			// handle new lines :
+			[/\n/g, '\\n'],
+			// remove comments {{!-- xy --}} or {{! xy}} :
+			[/({{!--.+?--}}|{{!.+?}})/g, ''],
+			// handle double quotes :
+			[/(")(?![^{{]*}})/g, '\\"'],
+			// if :
+			[/{{#if (.+?)}}/g, '";if($1){out+="'],
+			// else if :
+			[/{{#elseif (.+?)}}/g, '"}else if($1){out+="'],
+			// else :
+			[/{{#else}}/g, '"}else{out+="'],
+			// end if :
+			[/{{\/if}}/g, '"}out+="'],
+			// singe helper :
+			[/{{#(.+?) (.+?)\/}}/g, '"+helpers.$1.call(this,($2))+"'],
+			// singe helper without arguments :
+			[/{{#(.+?)\/}}/g, '"+helpers.$1.call(this)+"'],
+			// open block helper :
+			[/{{#(.+?) (.+?)}}/g, '"+helpers.$1.call(this,($2),function(c,m){return(' + fnBegin],
+			// open block helper without arguments :
+			[/{{#(.+?)}}/g, '"+helpers.$1(function(c,m){return(' + fnBegin],
+			// end block helper :
+			[/{{\/(.+?)}}/g, '";return out}).call(c,m,root,meta,helpers,partials)})+"'],
+			// partial :
+			[/{{>(.+?) (.+?)}}/g, '"+partials.$1($2)+"'],
+			// partial without arguments :
+			[/{{>(.+?)}}/g, '"+partials.$1()+"'],
+			// default :
+			[/{{(.+?)}}/g, '"+($1)+"']
 		];
 
 	exports.template = function (_templateString) {
