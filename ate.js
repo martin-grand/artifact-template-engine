@@ -1,4 +1,11 @@
-var Ate = (function () {
+(function (engine) {
+	if (typeof module !== 'undefined' && module.exports) {
+		module.exports = engine;
+	} else {
+		this.ArtifactTemplateEngine = engine;
+	}
+
+})(function () {
 	var exports = {},
 		partials = {},
 		helpers = {
@@ -20,14 +27,14 @@ var Ate = (function () {
 
 		fnBegin = 'function(meta,root,parent,helpers,partials){meta=meta||{};' +
 			'meta.context=this;meta.parent=parent;var out="',
-		
+
 		regexp = [
 			// handle new lines :
 			[/\n/g, '\\n'],
 			// remove comments {{!-- xy --}} or {{! xy}} :
 			[/({{!--.+?--}}|{{!.+?}})/g, ''],
 			// handle double quotes :
-			[/(")(?![^{{]*}})/g, '\\"'],
+			[/(")(?![^{]*}})/g, '\\"'],
 			// if :
 			[/{{#if (.+?)}}/g, '";if($1){out+="'],
 			// else if :
@@ -80,4 +87,4 @@ var Ate = (function () {
 
 	return exports;
 
-})();
+});
