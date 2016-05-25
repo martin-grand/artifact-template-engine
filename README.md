@@ -55,10 +55,10 @@ tplEngine.addHelper('reverseArg', function(arg){
 });
 
 engine.template('{{#reverse}}YEAHH{{/reverse}}')();
-// resut: "HHAEY"
+// result: "HHAEY"
 
 engine.template('{{#reverseArg this.text /}}')({text : "YEAHH"});
-// resut: "HHAEY"
+// result: "HHAEY"
 ```
 ## Partials
 You can add your partial as well
@@ -74,7 +74,7 @@ engine.addPartial(
 );
 
 engine.template('{{>person this}}')({"name":"Sheldon"});
-// resut: <span class="person">Sheldon</span>
+// result: <span class="person">Sheldon</span>
 ```
 
 working examples:
