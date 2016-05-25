@@ -75,7 +75,7 @@
 				return fn.call(context, {}, context, false, helpers, partials);
 			}
 		} catch (e) {
-			console.error('Ouch', e, getFnStringFromTemplateString(_templateString));
+			console.error(e, getFnStringFromTemplateString(_templateString));
 		}
 		
 	};
