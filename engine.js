@@ -62,9 +62,9 @@
 		var i;
 		
 		for (i = 0; i < regexp.length; i++) {
-			templateString = templateString.replace(regexp[i][0], regexp[i][1]);
+			_templateString = _templateString.replace(regexp[i][0], regexp[i][1]);
 		}
-		return '(' + fnBegin + templateString + '";return out})';
+		return '(' + fnBegin + _templateString + '";return out})';
 		
 	}
 
