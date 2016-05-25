@@ -4,7 +4,6 @@
 	} else {
 		this.Arti = engine;
 	}
-
 })(function () {
 	var exports = {},
 		partials = {},
@@ -18,7 +17,6 @@
 					}
 				}
 				return content;
-				
 			}
 		},
 
@@ -56,17 +54,16 @@
 			[/{{>(.+?)}}/g, '"+partials.$1()+"'],
 			// default :
 			[/{{(.+?)}}/g, '"+($1)+"']
-		];
-
-	function getFnStringFromTemplateString(_templateString) {
-		var i;
+		],
 		
-		for (i = 0; i < regexp.length; i++) {
-			_templateString = _templateString.replace(regexp[i][0], regexp[i][1]);
-		}
-		return '(' + fnBegin + _templateString + '";return out})';
-		
-	}
+		getFnStringFromTemplateString = function(_templateString) {
+			var i;
+			
+			for (i = 0; i < regexp.length; i++) {
+				_templateString = _templateString.replace(regexp[i][0], regexp[i][1]);
+			}
+			return '(' + fnBegin + _templateString + '";return out})';
+		};
 
 	exports.template = function(_templateString) {
 		var fn;
@@ -77,22 +74,18 @@
 				context = context || {};
 				return fn.call(context, {}, context, false, helpers, partials);
 			}
-			
 		} catch (e) {
 			console.error('template error:', e, getFnStringFromTemplateString(_templateString));
-			
 		}
 		
 	};
 
 	exports.addHelper = function (_helperName, _function) {
 		helpers[_helperName] = _function;
-		
 	};
 
 	exports.addPartial = function (_partialName, _templateString) {
 		partials[_partialName] = exports.template(_templateString);
-		
 	};
 
 	return exports;
