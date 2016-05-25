@@ -2,7 +2,7 @@
 	if (typeof module !== 'undefined' && module.exports) {
 		module.exports = engine;
 	} else {
-		this.ArtifactTemplateEngine = engine;
+		this.Arti = engine;
 	}
 
 })(function () {
@@ -16,13 +16,10 @@
 					if (object.hasOwnProperty(key)) {
 						content += contentBlock(object[key], {key: key, index: key});
 					}
-
 				}
-
 				return content;
-
+				
 			}
-
 		},
 
 		fnBegin = 'function(meta,root,parent,helpers,partials){meta=meta||{};' +
@@ -61,30 +58,43 @@
 			[/{{(.+?)}}/g, '"+($1)+"']
 		];
 
-	exports.template = function (_templateString) {
-		return function (_context) {
-			_context = _context || {};
-			return eval('(' + fnBegin + (function () {
-					for (var i = 0; i < regexp.length; i++) {
-						_templateString = _templateString.replace(regexp[i][0], regexp[i][1]);
-					}
-
-					return _templateString;
-
-				})() + '";return out})').call(_context, {}, _context, false, helpers, partials);
-
+	function getFnStringFromTemplateString(_templateString) {
+		var i;
+		
+		for (i = 0; i < regexp.length; i++) {
+			templateString = templateString.replace(regexp[i][0], regexp[i][1]);
 		}
+		return '(' + fnBegin + templateString + '";return out})';
+		
+	}
 
+	exports.template = function(_templateString) {
+		var fn;
+		
+		try {
+			fn = eval(getFnStringFromTemplateString(_templateString));
+			return function (context) {
+				context = context || {};
+				return fn.call(context, {}, context, false, helpers, partials);
+			}
+			
+		} catch (e) {
+			console.error('template error:', e, getFnStringFromTemplateString(_templateString));
+			
+		}
+		
 	};
 
 	exports.addHelper = function (_helperName, _function) {
 		helpers[_helperName] = _function;
+		
 	};
 
 	exports.addPartial = function (_partialName, _templateString) {
 		partials[_partialName] = exports.template(_templateString);
+		
 	};
 
 	return exports;
-
+	
 });
