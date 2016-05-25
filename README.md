@@ -1,5 +1,5 @@
 # Artifact template engine
-Artifact template engine is a javascript templateing engine.
+Artifact template engine is a javascript templating engine.
 
 ### Incredibly small
 - less then 100 rows (with comments)
