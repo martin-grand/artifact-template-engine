@@ -170,7 +170,6 @@ source:
 </ul>
 
 <!-- or with root: -->
-
 <ul>
 	{{#each this}}
 	<li class="character">{{this.name}}'s friends:
@@ -184,6 +183,7 @@ source:
 </ul>
 ```
 result with `{"leonard":{"name":"Leonard Hofstadter","friends":["Penny","Howard Wolowitz","Raj Koothrappali"]},"sheldon":{"name":"Sheldon Cooper","friends":["Sheldon Cooper"]}}` context:
+
 ```html
 <ul>
 	<li class="character">Leonard Hofstadter's friends:
@@ -240,5 +240,5 @@ engine.template('{{>person this}}')({"name":"Sheldon"});
 // result: <span class="person">Sheldon</span>
 ```
 
-performance test nad sandbox:
+performance test and sandbox:
 http://codepen.io/martingrand/full/mEbPOP/
