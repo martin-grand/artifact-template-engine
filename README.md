@@ -107,17 +107,18 @@ source:
 	younger than 30.
 {{/if}}
 ```
+
 result with `{"name":"Sheldon Cooper","age":35}` context:
 ```html
 Sheldon Cooper is older than 30.
 ```
-result with `{"name":"Sheldon Cooper","age":20}` context:
-```html
-Sheldon Cooper is younger than 30.
-```
 result with `{"name":"Sheldon Cooper","age":30}` context:
 ```html
 Sheldon Cooper is exactly 30 years old.
+```
+result with `{"name":"Sheldon Cooper","age":25}` context:
+```html
+Sheldon Cooper is younger than 30.
 ```
 
 ### Use each
@@ -129,7 +130,9 @@ source:
 	{{/each}}
 </ul>
 ```
+
 result with `{"leonard":"Leonard Hofstadter","sheldon":"Sheldon Cooper"}` or `[{"name":"Sheldon Cooper"},{"name":"Leonard Hofstadter"}]` context:
+
 ```html
 <ul>
 	<li>Sheldon Cooper</li>
@@ -168,7 +171,6 @@ source:
 	</li>
 	{{/each}}
 </ul>
-
 <!-- or with root: -->
 <ul>
 	{{#each this}}
