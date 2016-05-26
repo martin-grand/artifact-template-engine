@@ -38,6 +38,184 @@ results in
 <span>Sheldon Cooper is 35 years old.</span>
 ```
 
+# Working examples
+
+### Simple data pass
+source:
+```html
+<span class="character">{{this.name}} is {{this.age}} years old.</span>
+```
+result with `{"name":"Sheldon Cooper","age":35}` context:
+```html
+<span class="character">Sheldon Cooper is 35 years old.</span>
+```
+
+### Set up defaults
+source:
+```html
+<span class="character">{{this.name || 'the user'}} is {{this.age || 'some'}} years old.</span>
+```
+result with `{}` context:
+```html
+<span class="character">the user is some years old.</span>
+```
+
+### Use comments
+source:
+```html
+this is invisible: {{!anithing you want to hide}}
+This is also invisible:
+{{!--
+{{this.something}}
+--}}
+```
+result with `{}` context:
+```html
+this is invisible: 
+This is also invisible:
+```
+
+### Use operations
+source:
+```html
+<p>{{this.name}} will be {{this.age + 1}} years old next year.</p>
+```
+result with `{"name":"Sheldon Cooper","age":35}` context:
+```html
+<p>Sheldon Cooper will be 36 years old next year.</p>
+```
+
+### Simple operations
+source:
+```html
+<p>one day contains {{24*60*60}} second.</p>
+```
+result with `{}` context:
+```html
+<p>one day contains 86400 second.</p>
+```
+
+### Conditions
+source:
+```html
+<p>
+	{{this.name}} is 
+	{{#if this.age > 30}}
+		older than 30
+	{{#elseif this.age === 30}}
+		exactly 30 years old
+	{{#else}}
+		younger than 30
+	{{/if}}.
+</p>
+```
+result with `{"name":"Sheldon Cooper","age":35}` context:
+```html
+<p>
+	Sheldon Cooper is 
+	
+		older than 30
+	.
+</p>
+```
+
+### Use each
+source:
+```html
+<ul>
+	{{#each this}}
+	<li>{{this}}</li>
+	{{/each}}
+</ul>
+```
+result with `{"leonard":"Leonard Hofstadter","sheldon":"Sheldon Cooper"}` or `[{"name":"Sheldon Cooper"},{"name":"Leonard Hofstadter"}]` context:
+```html
+<ul>
+	
+	<li>Sheldon Cooper</li>
+	
+	<li>Leonard Hofstadter</li>
+	
+</ul>
+```
+
+### Use `meta.parent.context` variable
+source:
+```html
+<ul>
+	{{#each this}}
+	<li>{{meta.parent.context.sheldon}} smarter than {{this}}</li>
+	{{/each}}
+</ul>
+```
+result with `{"leonard":"Leonard Hofstadter","sheldon":"Sheldon Cooper"}` context:
+```html
+<ul>
+	
+	<li>Sheldon Cooper smarter than Leonard Hofstadter</li>
+	
+	<li>Sheldon Cooper smarter than Sheldon Cooper</li>
+	
+</ul>
+```
+
+### Use `meta.parent.parent.context` or `root` variable
+source:
+```html
+<ul>
+	{{#each this}}
+	<li class="character">{{this.name}}'s friends:
+		<ul class="friends">
+			{{#each this.friends}}
+			<li>{{this}} (but {{meta.parent.parent.context.sheldon.name}} still better)</li>
+			{{/each}}
+		</ul>
+	</li>
+	{{/each}}
+</ul>
+
+<!-- or with root: -->
+
+<ul>
+	{{#each this}}
+	<li class="character">{{this.name}}'s friends:
+		<ul class="friends">
+			{{#each this.friends}}
+			<li>{{this}} (but {{root.sheldon.name}} still better)</li>
+			{{/each}}
+		</ul>
+	</li>
+	{{/each}}
+</ul>
+```
+result with `{"leonard":{"name":"Leonard Hofstadter","friends":["Penny","Howard Wolowitz","Raj Koothrappali"]},"sheldon":{"name":"Sheldon Cooper","friends":["Sheldon Cooper"]}}` context:
+```html
+<ul>
+	
+	<li class="character">Leonard Hofstadter's friends:
+		<ul class="friends">
+			
+			<li>Penny (but Sheldon Cooper still better)</li>
+			
+			<li>Howard Wolowitz (but Sheldon Cooper still better)</li>
+			
+			<li>Raj Koothrappali (but Sheldon Cooper still better)</li>
+			
+		</ul>
+	</li>
+	
+	<li class="character">Sheldon Cooper's friends:
+		<ul class="friends">
+			
+			<li>Sheldon Cooper (but Sheldon Cooper still better)</li>
+			
+		</ul>
+	</li>
+	
+</ul>
+```
+
+
 ## Helpers
 You can create your own helpers as well
 
@@ -77,8 +255,5 @@ engine.template('{{>person this}}')({"name":"Sheldon"});
 // result: <span class="person">Sheldon</span>
 ```
 
-working examples:
-http://codepen.io/martingrand/full/MegeEW/
-
-performance test:
+performance test nad sandbox:
 http://codepen.io/martingrand/full/mEbPOP/
